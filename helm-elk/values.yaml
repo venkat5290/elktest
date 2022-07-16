@@ -1,0 +1,49 @@
+# Statefulset metadata & spec
+appName: ha-elasticsearch
+namespace: elktest
+imageRepository: chub.cloud.gov.in/library/elasticsearch
+imageTag: 7.16.2
+imagePullPolicy: Always
+replicas: 3
+updateStrategy: RollingUpdate
+cpuLimit: 2000m
+cpuRequest: 1000m
+memoryLimit: "4768Mi"
+memoryRequest: "3814Mi"
+readinessProbeInitialDelaySeconds: 30
+readinessProbePeriodSeconds: 10
+livenessProbeInitialDelaySeconds: 30
+livenessProbePeriodSeconds: 10
+
+#kubernetes secret to pull docker container
+imagePullSecrets:
+  - name: chubregcred
+
+# Service spec
+httpRestPort: 9200
+transportPort: 9300
+serviceType: ClusterIP
+
+#ingress host spec
+ingress:
+  hosts:
+    - host: helmelkprodurl.nic.in
+      paths: []
+
+# Elasticsearch options
+esJavaOpts: "-Xms4g -Xmx4g"
+clusterName: ha-elasticsearch-cluster
+nodePrefix: "ha-elasticsearch"
+minMasterNodes: 2
+vmMaxMapCount: 262144
+fileDescriptorLimit: 65535
+
+# Persistency
+volumeName: ha-elasticsearch-volume
+storageClass: cephblock
+accessMode: ReadWriteOnce
+storageResourceRequest: 20Gi
+
+# Pod Disruption Budget
+maxUnavailable: 1
+pdbName: ha-elasticsearch-pdb

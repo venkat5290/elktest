@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kibana
+  labels:
+    app: kibana
+  namespace: helm-elk
+spec:
+  rules:
+    - host: kibanaprodurl.nic.in
+      http:
+        paths:
+          - backend:
+              serviceName: kibana
+              servicePort: 5601
+

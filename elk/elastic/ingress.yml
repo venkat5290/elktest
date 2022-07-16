@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: elasticsearch
+  labels:
+    app: elasticsearch
+  namespace: helm-elk
+spec:
+  rules:
+    - host: elkprodurl.nic.in
+      http:
+        paths:
+          - backend:
+              serviceName: elasticsearch
+              servicePort: 9200
+

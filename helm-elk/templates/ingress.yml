@@ -1,0 +1,20 @@
+{{- $fullName := include "elasticsearch.full_name" . -}}
+{{- $svcPort := .Values.httpRestPort -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  metadata:
+  name: {{ template "elasticsearch.full_name" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          - backend:
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
+    {{- end }}
+
+
